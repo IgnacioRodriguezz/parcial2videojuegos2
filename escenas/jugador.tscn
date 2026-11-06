@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://bv67g3ivq6pig"]
+
+[ext_resource type="Script" path="res://scripts/jugador.gd" id="1_jpodt"]
+[ext_resource type="Texture2D" path="res://imagenes/jugador.png" id="1_tml57"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jpodt"]
+radius = 20.0
+
+[node name="Jugador" type="CharacterBody2D"]
+collision_layer = 1
+collision_mask = 6
+motion_mode = 1
+script = ExtResource("1_jpodt")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_jpodt")
+
+[node name="Arma" type="Node2D" parent="."]
+
+[node name="TexturaJugador" type="Sprite2D" parent="Arma"]
+texture = ExtResource("1_tml57")
+
+[node name="ColorArma" type="ColorRect" parent="Arma"]
+visible = false
+offset_right = 1.0
+offset_bottom = 1.0
+
+[node name="Marker2D" type="Marker2D" parent="Arma/ColorArma"]
+position = Vector2(26, 9)

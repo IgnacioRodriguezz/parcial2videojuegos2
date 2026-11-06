@@ -1,0 +1,209 @@
+[gd_scene format=3 uid="uid://b2qkxv7nivel2"]
+
+[ext_resource type="PackedScene" uid="uid://bv67g3ivq6pig" path="res://escenas/jugador.tscn" id="1_dayui"]
+[ext_resource type="PackedScene" uid="uid://dk01ggbwq4gj" path="res://escenas/zombie_tonto.tscn" id="2_v0a8y"]
+[ext_resource type="PackedScene" uid="uid://claqeedcsuxiv" path="res://escenas/zombie_inteligente.tscn" id="3_t4q8c"]
+[ext_resource type="Script" path="res://scripts/nivel.gd" id="4_nivel"]
+[ext_resource type="PackedScene" uid="uid://dpuertaparcial2" path="res://escenas/puerta.tscn" id="5_puerta"]
+[ext_resource type="Texture2D" path="res://imagenes/piso.png" id="6_piso"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_n21"]
+size = Vector2(20, 480)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_n22"]
+size = Vector2(20, 380)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_n23"]
+size = Vector2(20, 350)
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_n2"]
+vertices = PackedVector2Array(20, 20, 275, 20, 275, 125, 20, 125, 275, 255, 20, 255, 275, 425, 20, 425, 275, 630, 20, 630, 345, 20, 345, 125, 595, 20, 595, 125, 595, 255, 345, 255, 595, 425, 345, 425, 595, 630, 345, 630, 665, 425, 665, 630, 665, 20, 875, 20, 875, 125, 665, 125, 875, 255, 665, 255, 875, 425, 875, 630, 945, 20, 945, 125, 945, 255, 1150, 20, 1150, 125, 1150, 255, 1150, 425, 945, 425, 1150, 630, 945, 630)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(3, 2, 4, 5), PackedInt32Array(5, 4, 6, 7), PackedInt32Array(7, 6, 8, 9), PackedInt32Array(1, 10, 11, 2), PackedInt32Array(10, 12, 13, 11), PackedInt32Array(11, 13, 14, 15), PackedInt32Array(15, 14, 16, 17), PackedInt32Array(17, 16, 18, 19), PackedInt32Array(16, 20, 21, 18), PackedInt32Array(22, 23, 24, 25), PackedInt32Array(25, 24, 26, 27), PackedInt32Array(27, 26, 28, 20), PackedInt32Array(20, 28, 29, 21), PackedInt32Array(23, 30, 31, 24), PackedInt32Array(24, 31, 32, 26), PackedInt32Array(30, 33, 34, 31), PackedInt32Array(31, 34, 35, 32), PackedInt32Array(32, 35, 36, 37), PackedInt32Array(37, 36, 38, 39)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(20, 20, 1150, 20, 1150, 630, 20, 630), PackedVector2Array(275, 125, 345, 125, 345, 630, 275, 630), PackedVector2Array(595, 20, 665, 20, 665, 425, 595, 425), PackedVector2Array(875, 255, 945, 255, 945, 630, 875, 630)])
+agent_radius = 1.0
+
+[sub_resource type="Animation" id="Animation_n2ini"]
+resource_name = "inicio"
+length = 1.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CanvasLayer/ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 1), Color(0, 0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_n2fin"]
+resource_name = "final"
+length = 1.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CanvasLayer/ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 0), Color(0, 0, 0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_n2car"]
+resource_name = "cartel"
+length = 3.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CanvasLayer/Cartel:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6, 2.2, 3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_n2"]
+_data = {
+&"cartel": SubResource("Animation_n2car"),
+&"final": SubResource("Animation_n2fin"),
+&"inicio": SubResource("Animation_n2ini")
+}
+
+[node name="Juego" type="Node2D"]
+script = ExtResource("4_nivel")
+siguiente_nivel = ""
+
+[node name="Piso" type="Sprite2D" parent="."]
+texture_repeat = 2
+position = Vector2(585, 325)
+texture = ExtResource("6_piso")
+region_enabled = true
+region_rect = Rect2(0, 0, 1170, 650)
+
+[node name="Jugador" parent="." instance=ExtResource("1_dayui")]
+position = Vector2(130, 90)
+
+[node name="ZombieTonto" parent="." instance=ExtResource("2_v0a8y")]
+position = Vector2(1060, 120)
+
+[node name="ZombieTonto2" parent="." instance=ExtResource("2_v0a8y")]
+position = Vector2(700, 560)
+
+[node name="ZombieInteligente" parent="." instance=ExtResource("3_t4q8c")]
+position = Vector2(1060, 560)
+
+[node name="ZombieInteligente2" parent="." instance=ExtResource("3_t4q8c")]
+position = Vector2(430, 120)
+
+[node name="Puerta" parent="." instance=ExtResource("5_puerta")]
+position = Vector2(1080, 340)
+
+[node name="Pared1" type="StaticBody2D" parent="."]
+position = Vector2(310, 390)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pared1"]
+shape = SubResource("RectangleShape2D_n21")
+
+[node name="Polygon2D" type="Polygon2D" parent="Pared1"]
+color = Color(0.35, 0.36, 0.42, 1)
+polygon = PackedVector2Array(-10, -240, 10, -240, 10, 240, -10, 240)
+
+[node name="Pared2" type="StaticBody2D" parent="."]
+position = Vector2(630, 210)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pared2"]
+shape = SubResource("RectangleShape2D_n22")
+
+[node name="Polygon2D" type="Polygon2D" parent="Pared2"]
+color = Color(0.35, 0.36, 0.42, 1)
+polygon = PackedVector2Array(-10, -190, 10, -190, 10, 190, -10, 190)
+
+[node name="Pared3" type="StaticBody2D" parent="."]
+position = Vector2(910, 455)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pared3"]
+shape = SubResource("RectangleShape2D_n23")
+
+[node name="Polygon2D" type="Polygon2D" parent="Pared3"]
+color = Color(0.35, 0.36, 0.42, 1)
+polygon = PackedVector2Array(-10, -175, 10, -175, 10, 175, -10, 175)
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+navigation_polygon = SubResource("NavigationPolygon_n2")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="LabelPuntos" type="Label" parent="CanvasLayer"]
+offset_left = 20.0
+offset_top = 14.0
+offset_right = 320.0
+offset_bottom = 48.0
+theme_override_font_sizes/font_size = 26
+text = "puntos: 0"
+
+[node name="LabelVida" type="Label" parent="CanvasLayer"]
+offset_left = 20.0
+offset_top = 50.0
+offset_right = 320.0
+offset_bottom = 84.0
+theme_override_font_sizes/font_size = 26
+text = "vida: 100"
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Cartel" type="Control" parent="CanvasLayer"]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorFondo" type="ColorRect" parent="CanvasLayer/Cartel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.35, 0.35, 0.38, 1)
+
+[node name="LabelCartel" type="Label" parent="CanvasLayer/Cartel"]
+self_modulate = Color(1, 0.2, 0.2, 1)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 90
+text = "GAME OVER"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_n2")
+}
+autoplay = "inicio"
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
+[connection signal="body_entered" from="Puerta" to="." method="_on_puerta_body_entered"]

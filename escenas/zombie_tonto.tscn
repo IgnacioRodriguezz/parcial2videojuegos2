@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://dk01ggbwq4gj"]
+
+[ext_resource type="Script" path="res://scripts/zombie_tonto.gd" id="1_3wa0d"]
+[ext_resource type="Texture2D" path="res://imagenes/zombie.png" id="2_5w4xd"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ukb40"]
+radius = 21.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_o1gyu"]
+radius = 40.0
+
+[node name="ZombieTonto" type="CharacterBody2D" groups=["enemigos"]]
+collision_layer = 4
+collision_mask = 7
+motion_mode = 1
+script = ExtResource("1_3wa0d")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.65, 1, 0.6, 1)
+texture = ExtResource("2_5w4xd")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_ukb40")
+
+[node name="AreaAtaque" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AreaAtaque"]
+shape = SubResource("CircleShape2D_o1gyu")
+
+[node name="TimerAtaque" type="Timer" parent="."]
+wait_time = 1.0
+autostart = true
+
+[connection signal="body_entered" from="AreaAtaque" to="." method="_on_area_ataque_body_entered"]
+[connection signal="body_exited" from="AreaAtaque" to="." method="_on_area_ataque_body_exited"]
+[connection signal="timeout" from="TimerAtaque" to="." method="_on_timer_ataque_timeout"]
