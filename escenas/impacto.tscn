@@ -1,0 +1,49 @@
+[gd_scene format=3 uid="uid://cimpactoparc2"]
+
+[ext_resource type="Script" path="res://scripts/efecto.gd" id="1_efecto"]
+[ext_resource type="Texture2D" path="res://imagenes/particula_fuego.png" id="2_tex"]
+
+[sub_resource type="Gradient" id="Gradient_imp"]
+offsets = PackedFloat32Array(0, 0.35, 1)
+colors = PackedColorArray(1, 1, 0.8, 1, 1, 0.62, 0.12, 1, 0.55, 0.12, 0, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_imp"]
+gradient = SubResource("Gradient_imp")
+
+[sub_resource type="Curve" id="Curve_imp"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_imp"]
+curve = SubResource("Curve_imp")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_imp"]
+emission_shape = 1
+emission_sphere_radius = 3.0
+particle_flag_align_y = true
+spread = 180.0
+initial_velocity_min = 150.0
+initial_velocity_max = 340.0
+gravity = Vector3(0, 0, 0)
+damping_min = 200.0
+damping_max = 400.0
+scale_min = 0.03
+scale_max = 0.075
+scale_curve = SubResource("CurveTexture_imp")
+color_ramp = SubResource("GradientTexture1D_imp")
+
+[node name="Impacto" type="GPUParticles2D"]
+amount = 22
+texture = ExtResource("2_tex")
+lifetime = 0.25
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_imp")
+script = ExtResource("1_efecto")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.8
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

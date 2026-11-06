@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://cfogonazoparc2"]
+
+[ext_resource type="Script" path="res://scripts/efecto.gd" id="1_efecto"]
+[ext_resource type="Texture2D" path="res://imagenes/particula_fuego.png" id="2_tex"]
+
+[sub_resource type="Gradient" id="Gradient_fog"]
+offsets = PackedFloat32Array(0, 0.35, 1)
+colors = PackedColorArray(1, 0.96, 0.62, 1, 1, 0.55, 0.08, 1, 0.65, 0.16, 0, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_fog"]
+gradient = SubResource("Gradient_fog")
+
+[sub_resource type="Curve" id="Curve_fog"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_fog"]
+curve = SubResource("Curve_fog")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_fog"]
+emission_shape = 1
+emission_sphere_radius = 2.0
+particle_flag_align_y = true
+direction = Vector3(1, 0, 0)
+spread = 18.0
+initial_velocity_min = 110.0
+initial_velocity_max = 240.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.07
+scale_max = 0.16
+scale_curve = SubResource("CurveTexture_fog")
+color_ramp = SubResource("GradientTexture1D_fog")
+
+[node name="Fogonazo" type="GPUParticles2D"]
+amount = 14
+texture = ExtResource("2_tex")
+lifetime = 0.16
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_fog")
+script = ExtResource("1_efecto")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.6
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

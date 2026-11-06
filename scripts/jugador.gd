@@ -2,6 +2,7 @@ extends CharacterBody2D
 
 const SPEED = 300.0
 var escena_bala = load("res://escenas/bala.tscn")
+var escena_fogonazo = load("res://escenas/fogonazo.tscn")
 var vida = 100
 
 
@@ -15,6 +16,12 @@ func _physics_process(delta: float) -> void:
 		$"/root/Juego".add_child(nueva_bala)
 		nueva_bala.global_position = $Arma/ColorArma/Marker2D.global_position
 		nueva_bala.global_rotation = $Arma/ColorArma/Marker2D.global_rotation
+
+		# instanciar el fogonazo en la boca del arma
+		var nuevo_fogonazo = escena_fogonazo.instantiate()
+		$"/root/Juego".add_child(nuevo_fogonazo)
+		nuevo_fogonazo.global_position = $Arma/ColorArma/Marker2D.global_position
+		nuevo_fogonazo.global_rotation = $Arma/ColorArma/Marker2D.global_rotation
 
 	move_and_slide()
 
